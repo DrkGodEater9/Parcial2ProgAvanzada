@@ -10,7 +10,7 @@ public class LauncherServidor {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new ControlServidor();
+        new ControlPrincipalServidor();
     }
     
 }

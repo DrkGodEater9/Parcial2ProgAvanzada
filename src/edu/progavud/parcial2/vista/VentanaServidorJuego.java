@@ -1,5 +1,7 @@
 package edu.progavud.parcial2.vista;
 import edu.progavud.parcial2.control.FachadaServidor;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 
 /**
  *
@@ -15,6 +17,22 @@ public class VentanaServidorJuego extends javax.swing.JFrame {
     public VentanaServidorJuego(FachadaServidor fachadaS) {
         this.fachadaS = fachadaS;
         initComponents();
+    }
+
+    public JButton[] getBotones() {
+        return botones;
+    }
+
+    public void setBotones(JButton[] botones) {
+        this.botones = botones;
+    }
+
+    public JLabel[] getLabels() {
+        return labels;
+    }
+
+    public void setLabels(JLabel[] labels) {
+        this.labels = labels;
     }
 
     
@@ -482,6 +500,27 @@ public class VentanaServidorJuego extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 751, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
+        this.botones = new JButton[]{
+                vServJuegoBtn1, vServJuegoBtn2, vServJuegoBtn3, vServJuegoBtn4, vServJuegoBtn5,
+                vServJuegoBtn6, vServJuegoBtn7, vServJuegoBtn8, vServJuegoBtn9, vServJuegoBtn10,
+                vServJuegoBtn11, vServJuegoBtn12, vServJuegoBtn13, vServJuegoBtn14, vServJuegoBtn15,
+                vServJuegoBtn16, vServJuegoBtn17, vServJuegoBtn18, vServJuegoBtn19, vServJuegoBtn20,
+                vServJuegoBtn21, vServJuegoBtn22, vServJuegoBtn23, vServJuegoBtn24, vServJuegoBtn25,
+                vServJuegoBtn26, vServJuegoBtn27, vServJuegoBtn28, vServJuegoBtn29, vServJuegoBtn30,
+                vServJuegoBtn31, vServJuegoBtn32, vServJuegoBtn33, vServJuegoBtn34, vServJuegoBtn35,
+                vServJuegoBtn36, vServJuegoBtn37, vServJuegoBtn38, vServJuegoBtn39, vServJuegoBtn40
+        };
+
+        this.labels = new JLabel[]{
+                vServJuegoLbl1, vServJuegoLbl2, vServJuegoLbl3, vServJuegoLbl4, vServJuegoLbl5,
+                vServJuegoLbl6, vServJuegoLbl7, vServJuegoLbl8, vServJuegoLbl9, vServJuegoLbl10,
+                vServJuegoLbl11, vServJuegoLbl12, vServJuegoLbl13, vServJuegoLbl14, vServJuegoLbl15,
+                vServJuegoLbl16, vServJuegoLbl17, vServJuegoLbl18, vServJuegoLbl19, vServJuegoLbl20,
+                vServJuegoLbl21, vServJuegoLbl22, vServJuegoLbl23, vServJuegoLbl24, vServJuegoLbl25,
+                vServJuegoLbl26, vServJuegoLbl27, vServJuegoLbl28, vServJuegoLbl29, vServJuegoLbl30,
+                vServJuegoLbl31, vServJuegoLbl32, vServJuegoLbl33, vServJuegoLbl34, vServJuegoLbl35,
+                vServJuegoLbl36, vServJuegoLbl37, vServJuegoLbl38, vServJuegoLbl39, vServJuegoLbl40
+        };
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -490,6 +529,8 @@ public class VentanaServidorJuego extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private JButton[] botones;
+    private JLabel[] labels;
     public javax.swing.JButton vServJuegoBtn1;
     public javax.swing.JButton vServJuegoBtn10;
     public javax.swing.JButton vServJuegoBtn11;
