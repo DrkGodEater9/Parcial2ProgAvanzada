@@ -1,9 +1,10 @@
-package edu.progavud.parcial2.control;
+package Servidor.edu.progavud.parcial2.control;
 
-import edu.progavud.parcial2.vista.VentanaServidorJuego;
+import Servidor.edu.progavud.parcial2.vista.VentanaServidorJuego;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.Timer;
 
 /**
  *
@@ -31,10 +32,16 @@ public class FachadaServidor implements ActionListener {
             arregloDePosiciones[2] = numButtonPresionado;
         }
         if(!this.cPrincipalS.validarSiHaAcertado() && arregloDePosiciones[0] % 2 == 0) {
-            botones[arregloDePosiciones[1]].setVisible(true);
-            botones[arregloDePosiciones[2]].setVisible(true);
-            arregloDePosiciones[1] = -1;
-            arregloDePosiciones[2] = -1;
+            Timer timer = new Timer(800, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    botones[arregloDePosiciones[1]].setVisible(true);
+                    botones[arregloDePosiciones[2]].setVisible(true);
+                    arregloDePosiciones[1] = -1;
+                    arregloDePosiciones[2] = -1;
+                }
+            });
+            timer.setRepeats(false); // Make sure the timer only runs once
+            timer.start();
         }
         else if(arregloDePosiciones[0] % 2 == 0) {
             arregloDePosiciones[1] = -1;

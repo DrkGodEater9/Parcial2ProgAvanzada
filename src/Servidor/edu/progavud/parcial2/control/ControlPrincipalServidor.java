@@ -1,4 +1,4 @@
-package edu.progavud.parcial2.control;
+package Servidor.edu.progavud.parcial2.control;
 
 /**
  *

@@ -1,5 +1,5 @@
-package edu.progavud.parcial2.vista;
-import edu.progavud.parcial2.control.FachadaServidor;
+package Servidor.edu.progavud.parcial2.vista;
+import Servidor.edu.progavud.parcial2.control.FachadaServidor;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
