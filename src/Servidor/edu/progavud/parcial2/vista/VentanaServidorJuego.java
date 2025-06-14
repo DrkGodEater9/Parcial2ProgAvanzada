@@ -1,5 +1,6 @@
 package Servidor.edu.progavud.parcial2.vista;
 import Servidor.edu.progavud.parcial2.control.FachadaServidor;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
@@ -33,6 +34,11 @@ public class VentanaServidorJuego extends javax.swing.JFrame {
 
     public void setLabels(JLabel[] labels) {
         this.labels = labels;
+    }
+     public void agregarFoto(int numero, int otroNumero) {
+        // 3) Cargamos la imagen desde la ruta proporcionada
+        ImageIcon icono = new ImageIcon("src/Servidor/edu/progavud/parcial2/img/" + (numero + 1)+ ".jpg");
+        this.labels[otroNumero].setIcon(icono);
     }
 
     

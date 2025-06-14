@@ -22,6 +22,7 @@ public class ControlJuego {
             posiciones[i]=i;
             posiciones[posiciones.length - 1 - i] = i;
         }
+        setearRandomPosiciones();
     }
     
     public void setearRandomPosiciones() {

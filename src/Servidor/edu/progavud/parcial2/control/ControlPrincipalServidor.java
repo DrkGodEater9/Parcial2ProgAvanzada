@@ -9,6 +9,13 @@ public class ControlPrincipalServidor {
     private ControlJuego cJuego;
     private int[] arregloClicksYPosiciones;
     
+    
+    public void setearImagenesEnControl() {
+        int[] posiciones = this.cJuego.getPosiciones();
+        for(int i = 0; i < posiciones.length; i++) {
+           this.fachadaS.setearImagenes(posiciones[i],i);
+        }
+    }
     public boolean validarSiHaAcertado() {
         if(arregloClicksYPosiciones[0] % 2 == 0 && this.cJuego.getPosiciones()[arregloClicksYPosiciones[1]] == this.cJuego.getPosiciones()[arregloClicksYPosiciones[2]]) {
             //getAciertos++
@@ -31,7 +38,7 @@ public class ControlPrincipalServidor {
         this.cJuego = new ControlJuego(this);
         arregloClicksYPosiciones = new int[]{0,-1,-1};
         this.cJuego.setearPosicionesIniciales();
-        
+        this.setearImagenesEnControl();
     }
     
     
