@@ -1,0 +1,11 @@
+CREATE DATABASE jugadopedia;
+
+USE jugadopedia;
+
+CREATE TABLE jugadores (
+    codigo INT(11) NOT NULL,
+    nombre VARCHAR(20) COLLATE utf8mb4_general_ci NOT NULL,
+    PRIMARY KEY (codigo)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT jugadores VALUES (1, 'CaBritoG');

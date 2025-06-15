@@ -10,16 +10,19 @@ import java.net.*;
 public class Cliente {
     public String IP_SERVER;
     public int PUERTO_SERVIDOR = 8080;
-    
     private String nombreUsuario;
+    private int codigo;
     private Socket socket;
     private DataInputStream entrada;
     private DataOutputStream salida;
     private boolean conectado;
     
-    public Cliente() {
+    public Cliente(int codigo, String nombreUsuario) {
         this.conectado = false;
+        this.codigo = codigo;
+        this.nombreUsuario = nombreUsuario;
     }
+    public Cliente() {};
     
     // Getters y Setters
     public String getNombreUsuario() {
@@ -77,6 +80,14 @@ public class Cliente {
     public void setPUERTO_SERVIDOR(int PUERTO_SERVIDOR) {
         this.PUERTO_SERVIDOR = PUERTO_SERVIDOR;
     }
-    
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+
     
 }
