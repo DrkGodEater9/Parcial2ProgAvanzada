@@ -1,4 +1,5 @@
 package Servidor.edu.progavud.parcial2.vista;
+import Servidor.edu.progavud.parcial2.control.FachadaServidor;
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,15 +9,18 @@ import java.awt.*;
  */
 public class VentanaServidorChat extends JFrame {
     
-    public JTextArea txtAreaLog;
     public JButton btnIniciar;
     public JButton btnDetener;
     public JLabel lblEstado;
     public JLabel lblClientesConectados;
     public JPanel panelClientes;
+    private FachadaServidor fachadaS;
     
-    public VentanaServidorChat() {
+    public VentanaServidorChat(FachadaServidor fachada) {
+        this.fachadaS = fachada;
         initComponents();
+        btnIniciar.setActionCommand("iniciarServ");
+        btnDetener.setActionCommand("detenerServ");
     }
     
     private void initComponents() {
@@ -39,33 +43,18 @@ public class VentanaServidorChat extends JFrame {
         lblClientesConectados = new JLabel("Clientes: 0");
         panelControl.add(lblClientesConectados);
         
-        // Panel izquierdo - Log
-        txtAreaLog = new JTextArea(20, 30);
-        txtAreaLog.setEditable(false);
-        txtAreaLog.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 11));
-        JScrollPane scrollLog = new JScrollPane(txtAreaLog);
-        scrollLog.setBorder(BorderFactory.createTitledBorder("Log del Servidor"));
-        
-        // Panel derecho - Ventanas de clientes
+        // Panel central - Ventanas de clientes
         panelClientes = new JPanel();
         panelClientes.setLayout(new BoxLayout(panelClientes, BoxLayout.Y_AXIS));
         JScrollPane scrollClientes = new JScrollPane(panelClientes);
         scrollClientes.setBorder(BorderFactory.createTitledBorder("Chats de Clientes"));
-        scrollClientes.setPreferredSize(new Dimension(400, 300));
-        
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollLog, scrollClientes);
-        splitPane.setDividerLocation(400);
+        scrollClientes.setPreferredSize(new Dimension(600, 400));
         
         add(panelControl, BorderLayout.NORTH);
-        add(splitPane, BorderLayout.CENTER);
+        add(scrollClientes, BorderLayout.CENTER);
         
         pack();
         setLocationRelativeTo(null);
-    }
-    
-    public void agregarLog(String mensaje) {
-        txtAreaLog.append("[" + java.time.LocalTime.now() + "] " + mensaje + "\n");
-        txtAreaLog.setCaretPosition(txtAreaLog.getDocument().getLength());
     }
     
     public void establecerEstadoServidor(boolean activo) {

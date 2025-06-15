@@ -7,6 +7,7 @@ package Servidor.edu.progavud.parcial2.control;
 public class ControlPrincipalServidor {
     private FachadaServidor fachadaS;
     private ControlJuego cJuego;
+    private ControlServidor cServidor;
     private int[] arregloClicksYPosiciones;
     
     
@@ -36,10 +37,35 @@ public class ControlPrincipalServidor {
     public ControlPrincipalServidor() {
         this.fachadaS = new FachadaServidor(this);
         this.cJuego = new ControlJuego(this);
+        this.cServidor= new ControlServidor(this);
         arregloClicksYPosiciones = new int[]{0,-1,-1};
         this.cJuego.setearPosicionesIniciales();
         this.setearImagenesEnControl();
     }
+    
+    public void enviarMensajeACliente(String nombreUsuario, String mensaje) {
+        this.cServidor.enviarMensajeACliente(nombreUsuario, mensaje);
+    }
+    
+        /**
+     * Inicia el servidor de comunicaciones.
+     */
+    public void iniciarServidor() throws Exception {
+        this.cServidor.iniciarServidor();
+    }
+    
+    /**
+     * Detiene el servidor de comunicaciones.
+     */
+    public void detenerServidor() {
+        this.cServidor.detenerServidor();
+    }
+
+    public FachadaServidor getFachadaS() {
+        return fachadaS;
+    }
+    
+    
     
     
 }

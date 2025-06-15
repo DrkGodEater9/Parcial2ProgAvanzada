@@ -44,7 +44,10 @@ public class VentanaCliente extends JFrame {
         JScrollPane scrollChat = new JScrollPane(txtAreaChat);
         scrollChat.setBorder(BorderFactory.createTitledBorder("Chat con Servidor"));
         
-        // Panel inferior - Envío
+        // Panel inferior - Envío y Estado
+        JPanel panelInferior = new JPanel(new BorderLayout());
+        
+        // Subpanel para envío de mensajes
         JPanel panelEnvio = new JPanel(new BorderLayout());
         panelEnvio.add(new JLabel("Mensaje: "), BorderLayout.WEST);
         txtMensaje = new JTextField();
@@ -57,11 +60,16 @@ public class VentanaCliente extends JFrame {
         // Label de estado
         lblEstado = new JLabel("Desconectado");
         lblEstado.setForeground(Color.RED);
+        lblEstado.setHorizontalAlignment(SwingConstants.CENTER);
         
+        // Agregar al panel inferior
+        panelInferior.add(panelEnvio, BorderLayout.CENTER);
+        panelInferior.add(lblEstado, BorderLayout.SOUTH);
+        
+        // Agregar todos los paneles al frame
         add(panelConexion, BorderLayout.NORTH);
         add(scrollChat, BorderLayout.CENTER);
-        add(panelEnvio, BorderLayout.SOUTH);
-        add(lblEstado, BorderLayout.PAGE_END);
+        add(panelInferior, BorderLayout.SOUTH);
         
         pack();
         setLocationRelativeTo(null);
