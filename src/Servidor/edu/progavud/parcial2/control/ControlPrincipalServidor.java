@@ -17,16 +17,17 @@ public class ControlPrincipalServidor {
     private int[] arregloClicksYPosiciones;
     
     public void cargarDatosALaConexionSQL() {
-        String[] datosDelSQL = new String[3];
+        String[] datosDelServer = new String[3];
         try {
-            datosDelSQL = this.cnxPropiedadesDB.cargarFile(this.fachadaS.getvServidorChat().retribuirArchivo("ArchivoPropertiesSQL"));
+            datosDelServer = this.cnxPropiedadesDB.cargarFile(this.fachadaS.getvServidorChat().retribuirArchivo("ArchivoPropertiesServer"));
         } catch (Exception ex) {
             this.fachadaS.getvServidorChat().mostrarError("Hubo un error al intentar cargar los datos para la CnxSQL");
         }
 
-        this.clienteDAO.getCnxSQL().setUsuario(datosDelSQL[0]);
-        this.clienteDAO.getCnxSQL().setContrasena(datosDelSQL[1]);
-        this.clienteDAO.getCnxSQL().setURLBD(datosDelSQL[2]);
+        this.clienteDAO.getCnxSQL().setUsuario(datosDelServer[0]);
+        this.clienteDAO.getCnxSQL().setContrasena(datosDelServer[1]);
+        this.clienteDAO.getCnxSQL().setURLBD(datosDelServer[2]);
+        this.cServidor.setPuertoServ(datosDelServer[3]);
     }
 
     /**
@@ -95,11 +96,12 @@ public class ControlPrincipalServidor {
         this.clienteDAO = new JugadorDAO(); // Inicializar antes de usar
         this.cnxPropiedadesDB = new ConexionPropiedadesDB();
         this.fachadaS = new FachadaServidor(this);
+        this.cServidor= new ControlServidor(this);
         cargarDatosALaConexionSQL();
         
         
         this.cJuego = new ControlJuego(this);
-        this.cServidor= new ControlServidor(this);
+        
         
         arregloClicksYPosiciones = new int[]{0,-1,-1};
         this.cJuego.setearPosicionesIniciales();

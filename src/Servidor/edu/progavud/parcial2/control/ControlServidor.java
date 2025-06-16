@@ -14,6 +14,7 @@ public class ControlServidor {
     private ControlPrincipalServidor cPrincipal;
     private ServerSocket serverSocket;
     private boolean servidorActivo;
+    private String puertoServ;
     private Map<String, HiloClienteServidor> clientesConectados;
     private Map<String, JPanel> ventanasChat;
     
@@ -44,7 +45,7 @@ public class ControlServidor {
         }
         
         try {
-            serverSocket = new ServerSocket(8080);
+            serverSocket = new ServerSocket(Integer.parseInt(puertoServ));
             servidorActivo = true;
             
             // Actualizar vista
@@ -209,4 +210,14 @@ public class ControlServidor {
     public boolean isServidorActivo() {
         return servidorActivo;
     }
+
+    public String getPuertoServ() {
+        return puertoServ;
+    }
+
+    public void setPuertoServ(String puertoServ) {
+        this.puertoServ = puertoServ;
+    }
+    
+    
 }
