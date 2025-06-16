@@ -1,15 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Servidor.edu.progavud.parcial2.modelo;
-
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 
 /**
  *
@@ -21,7 +15,7 @@ public class JugadorDAO {
     private ResultSet rs;
     private ConexionSQL cnxSQL;
 
-        /**
+    /**
      * Constructor por defecto que inicializa las referencias de conexión a
      * null.
      */
@@ -30,7 +24,6 @@ public class JugadorDAO {
         st = null;
         rs = null;
         cnxSQL = new ConexionSQL();
-        
     }
 
     /**
@@ -40,8 +33,8 @@ public class JugadorDAO {
      * @throws SQLException si ocurre un error al establecer la conexión
      */
     public void abrirElPuenteDeConexion() throws SQLException {
-        con = (Connection) cnxSQL.getConexion(); //Pide la coneccion
-        st = con.createStatement(); //Crea la instruccion para ser ejecutada
+        con = (Connection) cnxSQL.getConexion();
+        st = con.createStatement();
     }
 
     /**
@@ -51,26 +44,50 @@ public class JugadorDAO {
      * @throws SQLException si ocurre un error al cerrar los recursos
      */
     public void cerrarElPuenteDeConexion() throws SQLException {
-        st.close(); //Se cierra el statement (la instruccion para ser ejecutada)
-        cnxSQL.desconectar(); //(Se desconecta la conexion, lo que genera que el puente de conexion se haya cerrado
+        st.close();
+        cnxSQL.desconectar();
     }
     
-    public JugadorVO consultarJugador(int codigo) throws SQLException {
+    /**
+     * Consulta un jugador solo por contraseña (método original)
+     */
+    public JugadorVO consultarJugador(String contrasena) throws SQLException {
         JugadorVO jugador = null;
-        String consulta = "SELECT * FROM gatos WHERE codigo =" + codigo + "";
-        //consultaEspecifica es la consulta que vamos a hacer, dependiendo de con que argumento queremos consultar;
+        String consulta = "SELECT * FROM jugadores WHERE contrasena = '" + contrasena + "'";
 
         abrirElPuenteDeConexion();
-        rs = st.executeQuery(consulta); //Ejecuta la instruccion creada (statement)
+        rs = st.executeQuery(consulta);
         if (rs.next()) {
-            jugador = new JugadorVO(rs.getInt("codigo"), rs.getString("nombreUsuario"));
-            //Se crea el gato con los datos retribuidos de la tabla
+            jugador = new JugadorVO(rs.getString("contrasena"), rs.getString("nombreUsuario"));
         }
         cerrarElPuenteDeConexion();
 
         return jugador;
     }
 
+    /**
+     * Consulta un jugador por nombre de usuario Y contraseña
+     * 
+     * @param nombreUsuario el nombre de usuario a buscar
+     * @param contrasena la contraseña a verificar
+     * @return JugadorVO si encuentra coincidencia, null si no
+     * @throws SQLException si ocurre un error en la consulta
+     */
+    public JugadorVO consultarJugadorPorUsuarioYContrasena(String nombreUsuario, String contrasena) throws SQLException {
+        JugadorVO jugador = null;
+        String consulta = "SELECT * FROM jugadores WHERE nombreUsuario = '" + nombreUsuario + "' AND contrasena = '" + contrasena + "'";
+
+        abrirElPuenteDeConexion();
+        rs = st.executeQuery(consulta);
+        if (rs.next()) {
+            jugador = new JugadorVO(rs.getString("contrasena"), rs.getString("nombreUsuario"));
+        }
+        cerrarElPuenteDeConexion();
+
+        return jugador;
+    }
+
+    // Getters y Setters
     public Connection getCon() {
         return con;
     }
@@ -102,5 +119,4 @@ public class JugadorDAO {
     public void setCnxSQL(ConexionSQL cnxSQL) {
         this.cnxSQL = cnxSQL;
     }
-    
 }

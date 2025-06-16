@@ -3,13 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/a/Documents/NetBeansProjects/Parcial2ProgAvanzada/src/Servidor/edu/progavud/parcial2/control/ControlJuego.java</file>
-            <file>file:/C:/Users/a/Documents/NetBeansProjects/Parcial2ProgAvanzada/src/Servidor/edu/progavud/parcial2/control/LauncherServidor.java</file>
-            <file>file:/C:/Users/a/Documents/NetBeansProjects/Parcial2ProgAvanzada/src/Servidor/edu/progavud/parcial2/control/FachadaServidor.java</file>
-            <file>file:/C:/Users/a/Documents/NetBeansProjects/Parcial2ProgAvanzada/src/Servidor/edu/progavud/parcial2/vista/VentanaServidorChat.java</file>
+            <file>file:/C:/Users/a/Documents/NetBeansProjects/Parcial2ProgAvanzada/src/Servidor/edu/progavud/parcial2/modelo/JugadorDAO.java</file>
+            <file>file:/C:/Users/a/Documents/NetBeansProjects/Parcial2ProgAvanzada/src/Servidor/edu/progavud/parcial2/modelo/ConexionPropiedadesDB.java</file>
             <file>file:/C:/Users/a/Documents/NetBeansProjects/Parcial2ProgAvanzada/src/Servidor/edu/progavud/parcial2/control/ControlPrincipalServidor.java</file>
-            <file>file:/C:/Users/a/Documents/NetBeansProjects/Parcial2ProgAvanzada/src/Jugador/edu/progavud/parcial2/vista/VentanaCliente.java</file>
-            <file>file:/C:/Users/a/Documents/NetBeansProjects/Parcial2ProgAvanzada/src/Servidor/edu/progavud/parcial2/control/ControlServidor.java</file>
+            <file>file:/C:/Users/a/Documents/NetBeansProjects/Parcial2ProgAvanzada/src/Servidor/edu/progavud/parcial2/modelo/JugadorVO.java</file>
+            <file>file:/C:/Users/a/Documents/NetBeansProjects/Parcial2ProgAvanzada/src/Jugador/edu/progavud/parcial2/modelo/Cliente.java</file>
         </group>
     </open-files>
 </project-private>

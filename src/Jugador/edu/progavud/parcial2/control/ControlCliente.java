@@ -64,6 +64,7 @@ public class ControlCliente {
             // Actualizar vista
             fachada.getVentanaCliente().establecerEstadoConectado(true);
             fachada.getVentanaCliente().mostrarMensaje("=== Conectado al servidor ===");
+            fachada.getVentanaCliente().mostrarMensaje("Ingrese su contrasena:");
             
         } catch (IOException e) {
             cliente.setConectado(false);

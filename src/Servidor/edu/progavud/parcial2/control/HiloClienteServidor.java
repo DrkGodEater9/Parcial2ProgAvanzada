@@ -27,7 +27,22 @@ public class HiloClienteServidor extends Thread {
             
             // Recibir nombre del usuario
             nombreUsuario = entrada.readUTF();
+            
+            // Recibir contraseña como primer mensaje
+            String contrasena = entrada.readUTF();
+            
+            // Validar credenciales en la base de datos
+            if (!cServidor.validarCredenciales(nombreUsuario, contrasena)) {
+                enviarMensaje("ERROR: Credenciales inválidas. Usuario o contraseña incorrectos. Conexión terminada.");
+                Thread.sleep(1000); // Dar tiempo para que el mensaje llegue al cliente
+                return; // Esto terminará el hilo y cerrará la conexión
+            }
+            
+            // Si las credenciales son válidas, registrar el cliente
             cServidor.registrarCliente(nombreUsuario, this);
+            
+            // Enviar confirmación de conexión exitosa
+            enviarMensaje("Conectado exitosamente al servidor. ¡Bienvenido " + nombreUsuario + "!");
             
             // Escuchar mensajes del cliente
             while (!Thread.currentThread().isInterrupted()) {
@@ -36,10 +51,14 @@ public class HiloClienteServidor extends Thread {
             }
             
         } catch (IOException e) {
-            // Cliente se desconectó
+            // Cliente se desconectó o error de comunicación
+        } catch (InterruptedException e) {
+            // Hilo interrumpido
         } finally {
             cerrarConexion();
-            cServidor.desregistrarCliente(nombreUsuario);
+            if (nombreUsuario != null) {
+                cServidor.desregistrarCliente(nombreUsuario);
+            }
         }
     }
     
@@ -49,6 +68,7 @@ public class HiloClienteServidor extends Thread {
     public void enviarMensaje(String mensaje) throws IOException {
         if (salida != null) {
             salida.writeUTF(mensaje);
+            salida.flush(); // Asegurar que el mensaje se envíe inmediatamente
         }
     }
     
@@ -57,6 +77,12 @@ public class HiloClienteServidor extends Thread {
      */
     private void cerrarConexion() {
         try {
+            if (entrada != null) {
+                entrada.close();
+            }
+            if (salida != null) {
+                salida.close();
+            }
             if (socket != null && !socket.isClosed()) {
                 socket.close();
             }

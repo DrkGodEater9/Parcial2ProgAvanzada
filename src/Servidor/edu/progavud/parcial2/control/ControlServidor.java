@@ -25,6 +25,17 @@ public class ControlServidor {
     }
     
     /**
+     * Valida las credenciales de un cliente
+     * 
+     * @param nombreUsuario el nombre de usuario a validar
+     * @param contrasena la contraseña a validar
+     * @return true si las credenciales son válidas, false en caso contrario
+     */
+    public boolean validarCredenciales(String nombreUsuario, String contrasena) {
+        return cPrincipal.validarJugador(nombreUsuario, contrasena);
+    }
+    
+    /**
      * Inicia el servidor.
      */
     public void iniciarServidor() throws IOException {
@@ -97,7 +108,7 @@ public class ControlServidor {
     }
     
     /**
-     * Registra un nuevo cliente conectado.
+     * Registra un nuevo cliente conectado (solo se llama después de validar credenciales).
      */
     public void registrarCliente(String nombreUsuario, HiloClienteServidor hilo) {
         // Validaciones

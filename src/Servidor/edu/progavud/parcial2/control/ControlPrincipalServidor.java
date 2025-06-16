@@ -28,35 +28,53 @@ public class ControlPrincipalServidor {
         this.clienteDAO.getCnxSQL().setContrasena(datosDelSQL[1]);
         this.clienteDAO.getCnxSQL().setURLBD(datosDelSQL[2]);
     }
-        public boolean estaElJugador(int codigo) {
 
-        JugadorVO clienteEncontrado = this.buscarJugador(codigo);
+    /**
+     * Valida las credenciales de un jugador (usuario y contraseña)
+     * 
+     * @param nombreUsuario el nombre de usuario a validar
+     * @param contrasena la contraseña a validar
+     * @return true si las credenciales son válidas, false en caso contrario
+     */
+    public boolean validarJugador(String nombreUsuario, String contrasena) {
+        try {
+            JugadorVO jugadorEncontrado = this.clienteDAO.consultarJugadorPorUsuarioYContrasena(nombreUsuario, contrasena);
+            return jugadorEncontrado != null;
+        } catch(Exception ex) {
+            this.fachadaS.getvServidorChat().mostrarError("Error al validar jugador en la base de datos: " + ex.getMessage());
+            return false;
+        }
+    }
+
+    public boolean estaElJugador(String contrasena) {
+        JugadorVO clienteEncontrado = this.buscarJugador(contrasena);
         if (clienteEncontrado != null) {
             return true;
         } else {
             return false;
         }
-
     }
     
-    public JugadorVO buscarJugador(int codigo) {
+    public JugadorVO buscarJugador(String contrasena) {
         try {
-            JugadorVO clienteEncontrado = this.clienteDAO.consultarJugador(codigo);
+            JugadorVO clienteEncontrado = this.clienteDAO.consultarJugador(contrasena);
             if(clienteEncontrado != null) {
                 return clienteEncontrado;
             }
         }
         catch(Exception ex) {
-            this.fachadaS.getvServidorChat().mostrarError("Ha habido un error a la hora de buscar al gato");
+            this.fachadaS.getvServidorChat().mostrarError("Ha habido un error a la hora de buscar al jugador");
         }
         return null;
     }
+
     public void setearImagenesEnControl() {
         int[] posiciones = this.cJuego.getPosiciones();
         for(int i = 0; i < posiciones.length; i++) {
            this.fachadaS.setearImagenes(posiciones[i],i);
         }
     }
+
     public boolean validarSiHaAcertado() {
         if(arregloClicksYPosiciones[0] % 2 == 0 && this.cJuego.getPosiciones()[arregloClicksYPosiciones[1]] == this.cJuego.getPosiciones()[arregloClicksYPosiciones[2]]) {
             //getAciertos++
@@ -73,13 +91,16 @@ public class ControlPrincipalServidor {
         this.arregloClicksYPosiciones = arregloClicksYPosiciones;
     }
     
-    
     public ControlPrincipalServidor() {
+        this.clienteDAO = new JugadorDAO(); // Inicializar antes de usar
+        this.cnxPropiedadesDB = new ConexionPropiedadesDB();
         this.fachadaS = new FachadaServidor(this);
+        cargarDatosALaConexionSQL();
+        
+        
         this.cJuego = new ControlJuego(this);
         this.cServidor= new ControlServidor(this);
-        this.cnxPropiedadesDB = new ConexionPropiedadesDB();
-        cargarDatosALaConexionSQL();
+        
         arregloClicksYPosiciones = new int[]{0,-1,-1};
         this.cJuego.setearPosicionesIniciales();
         this.setearImagenesEnControl();
@@ -89,7 +110,7 @@ public class ControlPrincipalServidor {
         this.cServidor.enviarMensajeACliente(nombreUsuario, mensaje);
     }
     
-        /**
+    /**
      * Inicia el servidor de comunicaciones.
      */
     public void iniciarServidor() throws Exception {
@@ -106,8 +127,4 @@ public class ControlPrincipalServidor {
     public FachadaServidor getFachadaS() {
         return fachadaS;
     }
-    
-    
-    
-    
 }
