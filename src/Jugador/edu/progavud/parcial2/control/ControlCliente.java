@@ -1,13 +1,9 @@
 package Jugador.edu.progavud.parcial2.control;
 
 import Jugador.edu.progavud.parcial2.modelo.Cliente;
-import Jugador.edu.progavud.parcial2.modelo.ClienteDAO;
 import Jugador.edu.progavud.parcial2.modelo.ConexionPropiedades;
-import Jugador.edu.progavud.parcial2.modelo.ConexionPropiedadesDB;
 import java.io.*;
-import static java.lang.Integer.parseInt;
 import java.net.*;
-import java.util.ArrayList;
 
 /**
  * Controlador del cliente - Contiene toda la lógica de negocio y validaciones.
@@ -18,28 +14,12 @@ public class ControlCliente {
     private FachadaCliente fachada;
     private HiloEscuchaCliente hiloEscucha;
     private ConexionPropiedades cnxPropiedades;
-    private ConexionPropiedadesDB cnxPropiedadesDB;
-    private ClienteDAO clienteDAO;
     
     public ControlCliente() throws IOException {
         this.cliente = new Cliente();
         this.fachada = new FachadaCliente(this);
         this.cnxPropiedades=new ConexionPropiedades();
-        this.cnxPropiedadesDB = new ConexionPropiedadesDB();
-        cargarDatosALaConexionSQL();
-    }
-    
-    public void cargarDatosALaConexionSQL() {
-        String[] datosDelSQL = new String[3];
-        try {
-            datosDelSQL = this.cnxPropiedadesDB.cargarFile(this.fachada.getVentanaCliente().retribuirArchivo("ArchivoPropertiesSQL"));
-        } catch (Exception ex) {
-            this.fachada.getVentanaCliente().mostrarError("Hubo un error al intentar cargar los datos para la CnxSQL");
-        }
 
-        this.clienteDAO.getCnxSQL().setUsuario(datosDelSQL[0]);
-        this.clienteDAO.getCnxSQL().setContrasena(datosDelSQL[1]);
-        this.clienteDAO.getCnxSQL().setURLBD(datosDelSQL[2]);
     }
 
     
@@ -101,29 +81,7 @@ public class ControlCliente {
      * @return `true` si el gato existe en la base de datos, `false` si no
      * existe.
      */
-    public boolean estaElJugador(int codigo) {
 
-        Cliente clienteEncontrado = this.buscarJugador(codigo);
-        if (clienteEncontrado != null) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-    
-    public Cliente buscarJugador(int codigo) {
-        try {
-            Cliente clienteEncontrado = this.clienteDAO.consultarJugador(codigo);
-            if(clienteEncontrado != null) {
-                return clienteEncontrado;
-            }
-        }
-        catch(Exception ex) {
-            this.fachada.getVentanaCliente().mostrarError("Ha habido un error a la hora de buscar al gato");
-        }
-        return null;
-    }
     
     public void desconectarDelServidor() {
         try {

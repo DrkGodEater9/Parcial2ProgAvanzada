@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Jugador.edu.progavud.parcial2.modelo;
+package Servidor.edu.progavud.parcial2.modelo;
 
+import Jugador.edu.progavud.parcial2.modelo.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;

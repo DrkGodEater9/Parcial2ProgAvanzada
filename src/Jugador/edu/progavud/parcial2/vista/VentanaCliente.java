@@ -101,11 +101,11 @@ public class VentanaCliente extends JFrame {
     public void mostrarInfo(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
     }
-    
     public String retribuirArchivo(String titulo) {
         this.fc = new JFileChooser(System.getProperty("user.dir")+"/src/Jugador/edu/progavud/parcial2/data");
         fc.setDialogTitle(titulo);
         this.fc.showOpenDialog(fc);
         return fc.getSelectedFile().toString();
     }
+
 }

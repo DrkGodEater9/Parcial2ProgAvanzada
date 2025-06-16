@@ -2,7 +2,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Jugador.edu.progavud.parcial2.modelo;
+package Servidor.edu.progavud.parcial2.modelo;
+
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,7 +15,7 @@ import java.sql.Statement;
  *
  * @author carlosmamut1
  */
-public class ClienteDAO {
+public class JugadorDAO {
     private Connection con;
     private Statement st;
     private ResultSet rs;
@@ -24,7 +25,7 @@ public class ClienteDAO {
      * Constructor por defecto que inicializa las referencias de conexión a
      * null.
      */
-    public ClienteDAO() {
+    public JugadorDAO() {
         con = null;
         st = null;
         rs = null;
@@ -54,15 +55,15 @@ public class ClienteDAO {
         cnxSQL.desconectar(); //(Se desconecta la conexion, lo que genera que el puente de conexion se haya cerrado
     }
     
-    public Cliente consultarJugador(int codigo) throws SQLException {
-        Cliente jugador = null;
+    public JugadorVO consultarJugador(int codigo) throws SQLException {
+        JugadorVO jugador = null;
         String consulta = "SELECT * FROM gatos WHERE codigo =" + codigo + "";
         //consultaEspecifica es la consulta que vamos a hacer, dependiendo de con que argumento queremos consultar;
 
         abrirElPuenteDeConexion();
         rs = st.executeQuery(consulta); //Ejecuta la instruccion creada (statement)
         if (rs.next()) {
-            jugador = new Cliente(rs.getInt("codigo"), rs.getString("nombreUsuario"));
+            jugador = new JugadorVO(rs.getInt("codigo"), rs.getString("nombreUsuario"));
             //Se crea el gato con los datos retribuidos de la tabla
         }
         cerrarElPuenteDeConexion();

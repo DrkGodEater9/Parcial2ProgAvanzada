@@ -15,6 +15,7 @@ public class VentanaServidorChat extends JFrame {
     public JLabel lblClientesConectados;
     public JPanel panelClientes;
     private FachadaServidor fachadaS;
+    private JFileChooser fc;
     
     public VentanaServidorChat(FachadaServidor fachada) {
         this.fachadaS = fachada;
@@ -113,5 +114,14 @@ public class VentanaServidorChat extends JFrame {
         JTextArea area = (JTextArea) ventanaChat.getClientProperty("areaChat");
         area.append(mensaje + "\n");
         area.setCaretPosition(area.getDocument().getLength());
+    }
+    public void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    public String retribuirArchivo(String titulo) {
+        this.fc = new JFileChooser(System.getProperty("user.dir")+"/src/Jugador/edu/progavud/parcial2/data");
+        fc.setDialogTitle(titulo);
+        this.fc.showOpenDialog(fc);
+        return fc.getSelectedFile().toString();
     }
 }

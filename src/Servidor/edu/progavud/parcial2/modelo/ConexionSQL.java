@@ -1,5 +1,6 @@
-package Jugador.edu.progavud.parcial2.modelo;
+package Servidor.edu.progavud.parcial2.modelo;
 
+import Jugador.edu.progavud.parcial2.modelo.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
