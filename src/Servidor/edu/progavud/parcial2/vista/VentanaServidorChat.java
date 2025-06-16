@@ -119,7 +119,7 @@ public class VentanaServidorChat extends JFrame {
         JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }
     public String retribuirArchivo(String titulo) {
-        this.fc = new JFileChooser(System.getProperty("user.dir")+"/src/Jugador/edu/progavud/parcial2/data");
+        this.fc = new JFileChooser(System.getProperty("user.dir")+"/src/Servidor/edu/progavud/parcial2/data");
         fc.setDialogTitle(titulo);
         this.fc.showOpenDialog(fc);
         return fc.getSelectedFile().toString();
