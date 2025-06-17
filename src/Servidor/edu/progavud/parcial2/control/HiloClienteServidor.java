@@ -32,7 +32,7 @@ public class HiloClienteServidor extends Thread {
             String contrasena = entrada.readUTF();
             
             // Validar credenciales en la base de datos
-            if (!cServidor.validarCredenciales(nombreUsuario, contrasena)) {
+            if (!cServidor.validarCredenciales(contrasena, nombreUsuario)) {
                 enviarMensaje("ERROR: Credenciales inválidas. Usuario o contraseña incorrectos. Conexión terminada.");
                 Thread.sleep(1000); // Dar tiempo para que el mensaje llegue al cliente
                 return; // Esto terminará el hilo y cerrará la conexión

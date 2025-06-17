@@ -62,18 +62,6 @@ public class ConexionPropiedadesDB {
             props.getProperty("dato.URLBD"),
             props.getProperty("dato.puerto"),
             
-            props.getProperty("dato.usuario1"),
-            props.getProperty("dato.contrasena1"),
-            props.getProperty("dato.usuario2"),
-            props.getProperty("dato.contrasena2"),
-            props.getProperty("dato.usuario3"),
-            props.getProperty("dato.contrasena3"),
-            props.getProperty("dato.usuario4"),
-            props.getProperty("dato.contrasena4"),
-            props.getProperty("dato.usuario5"),
-            props.getProperty("dato.contrasena5"),
-            props.getProperty("dato.usuario6"),
-            props.getProperty("dato.contrasena6")
         };
         return datos;
 

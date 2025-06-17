@@ -1,11 +1,11 @@
-CREATE DATABASE jugadopedia;
+CREATE DATABASE juegoparejas;
 
-USE jugadopedia;
+USE juegoparejas;
 
 CREATE TABLE jugadores (
-    codigo INT(11) NOT NULL,
-    nombre VARCHAR(20) COLLATE utf8mb4_general_ci NOT NULL,
-    PRIMARY KEY (codigo)
+    contrasena VARCHAR(11) NOT NULL,
+    nombreUsuario VARCHAR(20) COLLATE utf8mb4_general_ci NOT NULL,
+    PRIMARY KEY (nombreUsuario)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT jugadores VALUES (1, 'CaBritoG');
+INSERT jugadores VALUES (1234, 'CaBritoG');

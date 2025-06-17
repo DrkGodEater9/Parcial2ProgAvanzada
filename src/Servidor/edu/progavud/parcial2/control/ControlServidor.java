@@ -32,8 +32,8 @@ public class ControlServidor {
      * @param contrasena la contraseña a validar
      * @return true si las credenciales son válidas, false en caso contrario
      */
-    public boolean validarCredenciales(String nombreUsuario, String contrasena) {
-        return cPrincipal.validarJugador(nombreUsuario, contrasena);
+    public boolean validarCredenciales(String contrasena, String nombreUsuario) {
+        return cPrincipal.getcJugador().validarJugador(contrasena, nombreUsuario);
     }
     
     /**

@@ -51,9 +51,9 @@ public class JugadorDAO {
     /**
      * Consulta un jugador solo por contraseña (método original)
      */
-    public JugadorVO consultarJugador(String contrasena) throws SQLException {
+    public JugadorVO consultarJugador(String nombreUsuario) throws SQLException {
         JugadorVO jugador = null;
-        String consulta = "SELECT * FROM jugadores WHERE contrasena = '" + contrasena + "'";
+        String consulta = "SELECT * FROM jugadores WHERE nombreUsuario = '" + nombreUsuario + "'";
 
         abrirElPuenteDeConexion();
         rs = st.executeQuery(consulta);
@@ -73,7 +73,7 @@ public class JugadorDAO {
      * @return JugadorVO si encuentra coincidencia, null si no
      * @throws SQLException si ocurre un error en la consulta
      */
-    public JugadorVO consultarJugadorPorUsuarioYContrasena(String nombreUsuario, String contrasena) throws SQLException {
+    public JugadorVO consultarJugadorPorUsuarioYContrasena(String contrasena, String nombreUsuario) throws SQLException {
         JugadorVO jugador = null;
         String consulta = "SELECT * FROM jugadores WHERE nombreUsuario = '" + nombreUsuario + "' AND contrasena = '" + contrasena + "'";
 
@@ -86,7 +86,15 @@ public class JugadorDAO {
 
         return jugador;
     }
+    public void insertarDatosDeLosJugadores(JugadorVO jugador) throws SQLException {
 
+        abrirElPuenteDeConexion();
+        String insercion = "INSERT INTO jugadores VALUES('" + jugador.getContrasena()+ "','" + jugador.getNombreUsuario()+"')";
+        //Se insertan los atributos del jugador que se va a meter en la BD, como un nuevo elemento pues
+        st.executeUpdate(insercion);
+        cerrarElPuenteDeConexion();
+
+    }
     // Getters y Setters
     public Connection getCon() {
         return con;
