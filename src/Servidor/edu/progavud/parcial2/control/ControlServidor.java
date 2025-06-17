@@ -37,6 +37,39 @@ public class ControlServidor {
     }
     
     /**
+     * Controla la visibilidad de la ventana de juego según el número de clientes
+     */
+    private void controlarVentanaJuego() {
+        int numClientes = clientesConectados.size();
+        
+        if (numClientes >= 2) {
+            // Mostrar ventana de juego cuando hay 2 o más clientes
+            cPrincipal.getFachadaS().mostrarVentanaJuego();
+            
+            // Notificar a todos los clientes que el juego puede comenzar
+            enviarMensajeATodosLosClientes("¡Hay " + numClientes + " jugadores conectados! El juego puede comenzar.");
+            
+        } else {
+            // Ocultar ventana de juego cuando hay menos de 2 clientes
+            cPrincipal.getFachadaS().ocultarVentanaJuego();
+            
+            // Notificar a los clientes que necesitan más jugadores
+            if (numClientes == 1) {
+                enviarMensajeATodosLosClientes("Esperando un jugador más para comenzar el juego...");
+            }
+        }
+    }
+    
+    /**
+     * Envía un mensaje a todos los clientes conectados
+     */
+    private void enviarMensajeATodosLosClientes(String mensaje) {
+        for (String nombreUsuario : clientesConectados.keySet()) {
+            enviarMensajeACliente(nombreUsuario, mensaje);
+        }
+    }
+    
+    /**
      * Inicia el servidor.
      */
     public void iniciarServidor() throws IOException {
@@ -73,6 +106,9 @@ public class ControlServidor {
             }
             clientesConectados.clear();
             ventanasChat.clear();
+            
+            // Ocultar ventana de juego al detener servidor
+            cPrincipal.getFachadaS().ocultarVentanaJuego();
             
             // Cerrar server socket
             if (serverSocket != null && !serverSocket.isClosed()) {
@@ -134,6 +170,9 @@ public class ControlServidor {
         
         // Actualizar vista
         cPrincipal.getFachadaS().getvServidorChat().actualizarContadorClientes(clientesConectados.size());
+        
+        // NUEVO: Controlar visibilidad de ventana de juego
+        controlarVentanaJuego();
     }
     
     /**
@@ -151,6 +190,9 @@ public class ControlServidor {
             
             // Actualizar vista
             cPrincipal.getFachadaS().getvServidorChat().actualizarContadorClientes(clientesConectados.size());
+            
+            // NUEVO: Controlar visibilidad de ventana de juego
+            controlarVentanaJuego();
         }
     }
     
@@ -219,5 +261,10 @@ public class ControlServidor {
         this.puertoServ = puertoServ;
     }
     
-    
+    /**
+     * Obtiene el número de clientes conectados
+     */
+    public int getNumeroClientesConectados() {
+        return clientesConectados.size();
+    }
 }

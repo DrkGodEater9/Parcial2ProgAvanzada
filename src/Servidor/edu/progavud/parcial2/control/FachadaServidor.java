@@ -25,6 +25,7 @@ public class FachadaServidor implements ActionListener {
         for (int i = 0; i < botones.length; i++) {
             botones[i].addActionListener(this);
         }
+        this.vServidorJuego.vServJuegoBtnInicia.addActionListener(this);
     }
 
     public void aparecerYDesaparecer(JButton button, int numButtonPresionado) {
@@ -69,10 +70,31 @@ public class FachadaServidor implements ActionListener {
         this.vServidorJuego.agregarFoto(numero, otroNumero);
     }
 
+    /**
+     * Muestra la ventana de juego cuando hay suficientes jugadores
+     */
+    public void mostrarVentanaJuego() {
+        if (vServidorJuego != null) {
+            vServidorJuego.setVisible(true);
+            vServidorJuego.toFront(); // Traer al frente
+        }
+    }
+
+    /**
+     * Oculta la ventana de juego cuando no hay suficientes jugadores
+     */
+    public void ocultarVentanaJuego() {
+        if (vServidorJuego != null) {
+            vServidorJuego.setVisible(false);
+        }
+    }
+
     public FachadaServidor(ControlPrincipalServidor cPrincipalS) {
         this.cPrincipalS = cPrincipalS;
         this.vServidorJuego = new VentanaServidorJuego(this);
-        this.vServidorJuego.setVisible(true);
+        // NO HACER VISIBLE LA VENTANA DE JUEGO INICIALMENTE
+        // this.vServidorJuego.setVisible(true); ← COMENTADO
+        
         this.vServidorChat = new VentanaServidorChat(this);
         this.vServidorChat.setVisible(true);
         activarActionListener();
@@ -115,8 +137,8 @@ public class FachadaServidor implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JButton[] botones = this.vServidorJuego.getBotones();
 
-        if (e.getActionCommand().equals("cerrar")) {
-            System.exit(0);
+        if (e.getActionCommand().equals("iniciaJuego")) {
+            
         }
         if (processingCards) {
             return;
