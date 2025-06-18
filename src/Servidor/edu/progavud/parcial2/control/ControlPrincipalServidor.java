@@ -41,7 +41,6 @@ public class ControlPrincipalServidor {
      * @return true si las credenciales son válidas, false en caso contrario
      */
 
-
     public void setearImagenesEnControl() {
         int[] posiciones = this.cJuego.getPosiciones();
         for(int i = 0; i < posiciones.length; i++) {
@@ -63,6 +62,13 @@ public class ControlPrincipalServidor {
 
     public void setArregloClicksYPosiciones(int[] arregloClicksYPosiciones) {
         this.arregloClicksYPosiciones = arregloClicksYPosiciones;
+    }
+    
+    /**
+     * NUEVO MÉTODO - Inicia el juego y bloquea nuevos clientes
+     */
+    public void iniciarJuego() {
+        this.cServidor.iniciarJuego();
     }
     
     public ControlPrincipalServidor() {
@@ -127,6 +133,13 @@ public class ControlPrincipalServidor {
 
     public void setcJugador(ControlJugador cJugador) {
         this.cJugador = cJugador;
+    }
+    
+    /**
+     * NUEVO GETTER - Para acceder al controlador del servidor
+     */
+    public ControlServidor getcServidor() {
+        return cServidor;
     }
     
 }

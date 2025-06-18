@@ -14,15 +14,27 @@ public class ControlServidor {
     private ControlPrincipalServidor cPrincipal;
     private ServerSocket serverSocket;
     private boolean servidorActivo;
+    private boolean juegoIniciado; // NUEVA VARIABLE
     private String puertoServ;
     private Map<String, HiloClienteServidor> clientesConectados;
     private Map<String, JPanel> ventanasChat;
+    private HiloClienteServidor hiloClienteServidor;
     
     public ControlServidor(ControlPrincipalServidor cPrincipal) {
         this.cPrincipal = cPrincipal;
         this.clientesConectados = new ConcurrentHashMap<>();
         this.ventanasChat = new ConcurrentHashMap<>();
         this.servidorActivo = false;
+        this.juegoIniciado = false; // INICIALIZAR EN FALSE
+    }
+    
+    /**
+     * Inicia el juego y bloquea nuevos clientes
+     */
+    public void iniciarJuego() {
+        this.juegoIniciado = true;
+        // Notificar a todos los clientes que el juego ha comenzado
+        enviarMensajeATodosLosClientes("El juego ha comenzado, No se aceptarán más jugadores.");
     }
     
     /**
@@ -99,6 +111,7 @@ public class ControlServidor {
     public void detenerServidor() {
         try {
             servidorActivo = false;
+            juegoIniciado = false; // REINICIAR EL ESTADO DEL JUEGO AL DETENER SERVIDOR
             
             // Desconectar todos los clientes
             for (HiloClienteServidor hilo : clientesConectados.values()) {
@@ -148,7 +161,19 @@ public class ControlServidor {
      * Registra un nuevo cliente conectado (solo se llama después de validar credenciales).
      */
     public void registrarCliente(String nombreUsuario, HiloClienteServidor hilo) {
-        // Validaciones
+        // NUEVA VALIDACIÓN - Rechazar si el juego ya inició
+        if (juegoIniciado) {
+            try {
+                hilo.enviarMensaje("ERROR: El juego ya ha comenzado. No se pueden conectar más jugadores.");
+                Thread.sleep(1000); // Dar tiempo para que llegue el mensaje
+            } catch (Exception e) {
+                // Error silencioso
+            }
+            hilo.interrupt();
+            return;
+        }
+        
+        // Validaciones existentes
         if (nombreUsuario == null || nombreUsuario.trim().isEmpty()) {
             return;
         }
@@ -266,5 +291,12 @@ public class ControlServidor {
      */
     public int getNumeroClientesConectados() {
         return clientesConectados.size();
+    }
+    
+    /**
+     * Getter para saber si el juego ya inició
+     */
+    public boolean isJuegoIniciado() {
+        return juegoIniciado;
     }
 }
