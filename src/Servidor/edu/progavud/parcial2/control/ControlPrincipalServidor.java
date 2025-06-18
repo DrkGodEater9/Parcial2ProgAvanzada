@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,6 +24,7 @@ public class ControlPrincipalServidor {
     private int turnoActual;
     private String jugadorActual;
     private int[] aciertosJugadores; // Array para guardar aciertos de cada jugador
+    private int[] intentosJugadores; // NUEVO: Array para guardar intentos de cada jugador
     private int totalParejas; // Total de parejas en el juego (depende del número de cartas)
     private int[] arregloClicksYPosiciones;
     
@@ -45,37 +47,31 @@ public class ControlPrincipalServidor {
         for(int i = 0; i < posiciones.length; i++) {
            this.fachadaS.setearImagenes(posiciones[i],i);
         }
+        
     }
 
     public boolean validarSiHaAcertado() {
-        if(arregloClicksYPosiciones[0] % 2 == 0 && this.cJuego.getPosiciones()[arregloClicksYPosiciones[1]] == this.cJuego.getPosiciones()[arregloClicksYPosiciones[2]]) {
-            // INCREMENTAR ACIERTOS DEL JUGADOR ACTUAL
-            if (turnoActual < aciertosJugadores.length) {
-                aciertosJugadores[turnoActual]++;
-                
-                // Notificar acierto a todos los jugadores
-                String mensaje = "¡" + jugadorActual + " encontró una pareja! Aciertos: " + aciertosJugadores[turnoActual];
-                cServidor.enviarMensajeATodosLosClientes(mensaje);
-                
-                // Actualizar interfaz del servidor
-                fachadaS.getvServidorChat().mostrarError(mensaje);
-                
-                // Verificar si el juego ha terminado
-                verificarFinDelJuego();
-            }
-            return true;
-        } else {
-            // NOTIFICAR FALLO Y CAMBIAR TURNO
-            if (arregloClicksYPosiciones[0] % 2 == 0) {
-                String mensaje = jugadorActual + " no acertó. Turno perdido.";
-                cServidor.enviarMensajeATodosLosClientes(mensaje);
-                fachadaS.getvServidorChat().mostrarError(mensaje);
-                
-                cambiarTurno();
-            }
+    if(arregloClicksYPosiciones[0] % 2 == 0 && this.cJuego.getPosiciones()[arregloClicksYPosiciones[1]] == this.cJuego.getPosiciones()[arregloClicksYPosiciones[2]]) {
+        // ACIERTO: Incrementar aciertos E intentos del jugador actual
+        if (turnoActual < aciertosJugadores.length) {
+            aciertosJugadores[turnoActual]++;
+            intentosJugadores[turnoActual]++;
+            
+            // Verificar si el juego ha terminado
+            verificarFinDelJuego();
         }
-        return false;
+        return true;
+    } else {
+        // FALLO: Solo incrementar intentos y cambiar turno
+        if (arregloClicksYPosiciones[0] % 2 == 0) {
+            if (turnoActual < intentosJugadores.length) {
+                intentosJugadores[turnoActual]++;
+            }
+            cambiarTurno();
+        }
     }
+    return false;
+}
 
     public void cambiarTurno() {
         if (juegoTerminado || jugadoresEnJuego.isEmpty()) {
@@ -85,10 +81,8 @@ public class ControlPrincipalServidor {
         turnoActual = (turnoActual + 1) % jugadoresEnJuego.size();
         jugadorActual = jugadoresEnJuego.get(turnoActual);
         
-        // Notificar a todos los jugadores sobre el cambio de turno
-        String mensajeTurno = "Turno de: " + jugadorActual;
-        cServidor.enviarMensajeATodosLosClientes(mensajeTurno);
-        fachadaS.getvServidorChat().mostrarError(mensajeTurno);
+        // ACTUALIZAR EL LABEL DE TURNO EN LA VENTANA DE JUEGO
+        fachadaS.getvServidorJuego().actualizarTurno(jugadorActual);
     }
     
     /**
@@ -104,48 +98,83 @@ public class ControlPrincipalServidor {
         // Si se encontraron todas las parejas, el juego termina
         if (totalAciertos >= totalParejas) {
             juegoTerminado = true;
-            determinarGanador();
+            determinarGanadorYCerrar();
         }
     }
     
-    public void determinarGanador() {
-        int maxAciertos = 0;
+    public void determinarGanadorYCerrar() {
+        double mejorPorcentaje = 0.0;
         String ganador = "";
         boolean empate = false;
         
-        // Encontrar el máximo número de aciertos
-        for (int i = 0; i < aciertosJugadores.length; i++) {
-            if (aciertosJugadores[i] > maxAciertos) {
-                maxAciertos = aciertosJugadores[i];
+        // Calcular porcentajes (aciertos / intentos) para cada jugador
+        StringBuilder mensajeResultado = new StringBuilder();
+        mensajeResultado.append("=== JUEGO TERMINADO ===\n");
+        mensajeResultado.append("Resultados finales:\n\n");
+        
+        for (int i = 0; i < jugadoresEnJuego.size(); i++) {
+            int aciertos = aciertosJugadores[i];
+            int intentos = intentosJugadores[i];
+            double porcentaje = (intentos > 0) ? ((double) aciertos / intentos) * 100 : 0.0;
+            
+            mensajeResultado.append(jugadoresEnJuego.get(i))
+                           .append(": ")
+                           .append(aciertos)
+                           .append(" aciertos / ")
+                           .append(intentos)
+                           .append(" intentos = ")
+                           .append(String.format("%.1f", porcentaje))
+                           .append("%\n");
+            
+            // Determinar ganador por mejor porcentaje
+            if (porcentaje > mejorPorcentaje) {
+                mejorPorcentaje = porcentaje;
                 ganador = jugadoresEnJuego.get(i);
                 empate = false;
-            } else if (aciertosJugadores[i] == maxAciertos && maxAciertos > 0) {
+            } else if (Math.abs(porcentaje - mejorPorcentaje) < 0.01 && mejorPorcentaje > 0) {
                 empate = true;
             }
         }
         
-        // Crear mensaje de resultado
-        StringBuilder mensajeResultado = new StringBuilder();
-        mensajeResultado.append("=== JUEGO TERMINADO ===\n");
-        mensajeResultado.append("Resultados finales:\n");
-        
-        for (int i = 0; i < jugadoresEnJuego.size(); i++) {
-            mensajeResultado.append(jugadoresEnJuego.get(i))
-                           .append(": ")
-                           .append(aciertosJugadores[i])
-                           .append(" aciertos\n");
-        }
-        
+        mensajeResultado.append("\n");
         if (empate) {
             mensajeResultado.append("¡EMPATE!");
         } else {
-            mensajeResultado.append("¡GANADOR: ").append(ganador).append("!");
+            mensajeResultado.append("¡GANADOR: ").append(ganador).append("!")
+                          .append("\nCon ").append(String.format("%.1f", mejorPorcentaje)).append("% de efectividad");
         }
         
-        // Enviar resultado a todos los jugadores y mostrar en servidor
+        // Mostrar resultado en JOptionPane
         String mensajeFinal = mensajeResultado.toString();
-        cServidor.enviarMensajeATodosLosClientes(mensajeFinal);
-        fachadaS.getvServidorChat().mostrarError(mensajeFinal);
+        JOptionPane.showMessageDialog(null, mensajeFinal, "¡Fin del Juego!", JOptionPane.INFORMATION_MESSAGE);
+        
+        // CERRAR TODO EL APLICATIVO
+        cerrarAplicativo();
+    }
+    
+    /**
+     * Cierra todas las ventanas y termina el aplicativo
+     */
+    public void cerrarAplicativo() {
+        try {
+            // Detener el servidor
+            detenerServidor();
+            
+            // Cerrar ventanas
+            if (fachadaS.getvServidorJuego() != null) {
+                fachadaS.getvServidorJuego().dispose();
+            }
+            if (fachadaS.getvServidorChat() != null) {
+                fachadaS.getvServidorChat().dispose();
+            }
+            
+            // Terminar aplicación
+            System.exit(0);
+            
+        } catch (Exception e) {
+            // Forzar cierre si hay error
+            System.exit(0);
+        }
     }
     
     public void inicializarSistemaTurnos() {
@@ -154,15 +183,14 @@ public class ControlPrincipalServidor {
             turnoActual = 0;
             jugadorActual = jugadoresEnJuego.get(0);
             aciertosJugadores = new int[jugadoresEnJuego.size()];
+            intentosJugadores = new int[jugadoresEnJuego.size()]; // INICIALIZAR INTENTOS
             juegoTerminado = false;
             
             // Calcular total de parejas (40 cartas = 20 parejas)
             totalParejas = 20;
             
-            // Notificar inicio de turnos
-            String mensajeInicio = "¡Juego iniciado! Turno de: " + jugadorActual;
-            cServidor.enviarMensajeATodosLosClientes(mensajeInicio);
-            fachadaS.getvServidorChat().mostrarError(mensajeInicio);
+            // ACTUALIZAR EL LABEL DE TURNO EN LA VENTANA DE JUEGO
+            fachadaS.getvServidorJuego().actualizarTurno(jugadorActual);
         }
     }
     
@@ -287,6 +315,14 @@ public class ControlPrincipalServidor {
 
     public void setAciertosJugadores(int[] aciertosJugadores) {
         this.aciertosJugadores = aciertosJugadores;
+    }
+
+    public int[] getIntentosJugadores() {
+        return intentosJugadores;
+    }
+
+    public void setIntentosJugadores(int[] intentosJugadores) {
+        this.intentosJugadores = intentosJugadores;
     }
 
     public int getTotalParejas() {
