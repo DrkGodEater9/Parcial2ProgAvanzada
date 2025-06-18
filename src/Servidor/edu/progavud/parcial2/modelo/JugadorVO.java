@@ -7,6 +7,8 @@ package Servidor.edu.progavud.parcial2.modelo;
 public class JugadorVO {
     private String contrasena;
     private String nombreUsuario;
+    private transient int aciertos;
+    private transient int intentos;
 
     public JugadorVO(String contrasena, String nombreUsuario) {
         this.contrasena = contrasena;

@@ -27,8 +27,12 @@ public class FachadaServidor implements ActionListener {
         }
         this.vServidorJuego.vServJuegoBtnInicia.addActionListener(this);
     }
-
     public void aparecerYDesaparecer(JButton button, int numButtonPresionado) {
+        String jugadorActual = this.cPrincipalS.getJugadorActual();
+        if (jugadorActual != null) {
+            String mensajeTurno = "Turno actual: " + jugadorActual;
+
+
         if (processingCards) {
             return;
         }
@@ -63,6 +67,7 @@ public class FachadaServidor implements ActionListener {
             arregloDePosiciones[1] = -1;
             arregloDePosiciones[2] = -1;
             processingCards = false;
+        }
         }
     }
 
@@ -156,6 +161,13 @@ public void actionPerformed(ActionEvent e) {
         }
         return; // Importante: salir aquí para no procesar otros eventos
     }
+    
+    // NUEVA VALIDACIÓN - Verificar si el juego ya terminó
+    if (this.cPrincipalS.isJuegoTerminado()) {
+        this.vServidorChat.mostrarError("El juego ya ha terminado.");
+        return;
+    }
+    
     
     if (processingCards) {
         return;

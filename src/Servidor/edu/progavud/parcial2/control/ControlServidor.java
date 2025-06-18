@@ -36,7 +36,14 @@ public class ControlServidor {
         // Notificar a todos los clientes que el juego ha comenzado
         enviarMensajeATodosLosClientes("El juego ha comenzado, No se aceptarán más jugadores.");
     }
-    
+    public ArrayList<String> obtenerNombresJugadores() {
+        return new ArrayList<>(clientesConectados.keySet());
+    }
+    public void enviarMensajeATodosLosClientes(String mensaje) {
+        for (String nombreUsuario : clientesConectados.keySet()) {
+            enviarMensajeACliente(nombreUsuario, mensaje);
+        }
+    }
     /**
      * Valida las credenciales de un cliente
      * 
@@ -75,11 +82,6 @@ public class ControlServidor {
     /**
      * Envía un mensaje a todos los clientes conectados
      */
-    private void enviarMensajeATodosLosClientes(String mensaje) {
-        for (String nombreUsuario : clientesConectados.keySet()) {
-            enviarMensajeACliente(nombreUsuario, mensaje);
-        }
-    }
     
     /**
      * Inicia el servidor.

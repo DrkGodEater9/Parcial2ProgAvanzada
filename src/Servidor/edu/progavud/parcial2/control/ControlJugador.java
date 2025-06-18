@@ -6,6 +6,8 @@ package Servidor.edu.progavud.parcial2.control;
 
 import Servidor.edu.progavud.parcial2.modelo.JugadorDAO;
 import Servidor.edu.progavud.parcial2.modelo.JugadorVO;
+import com.google.common.collect.BiMap; //Se importa de guava el bimap, el cual puede acceder como a las keys (si uno no las conoce, mas facilmente)
+import com.google.common.collect.HashBiMap;
 
 /**
  *
