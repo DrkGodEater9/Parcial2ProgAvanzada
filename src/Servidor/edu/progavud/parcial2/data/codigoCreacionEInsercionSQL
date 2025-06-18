@@ -8,4 +8,4 @@ CREATE TABLE jugadores (
     PRIMARY KEY (nombreUsuario)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT jugadores VALUES (1234, 'CaBritoG');
+INSERT jugadores VALUES (1234, 'Brito');

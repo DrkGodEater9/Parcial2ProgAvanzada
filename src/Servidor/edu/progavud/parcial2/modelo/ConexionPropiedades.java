@@ -1,41 +1,59 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Servidor.edu.progavud.parcial2.modelo;
-
-/**
- *
- * @author carlosmamut1
- */
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
 /**
- * Clase encargada de cargar un archivo de propiedades que contiene información
- * de múltiples objetos {@code GatoVO}. Permite extraer dichos valores en un
- * arreglo de {@code String}.
+ * Clase encargada de cargar y gestionar archivos de propiedades que contienen
+ * información de configuración de jugadores del sistema de juego de memoria.
+ * 
+ * Esta clase maneja la lectura de archivos .properties que almacenan datos
+ * de múltiples jugadores, incluyendo sus credenciales de acceso. Proporciona
+ * métodos para extraer estos valores y organizarlos en estructuras de datos
+ * apropiadas para su uso en el sistema.
+ * 
+ * El archivo de propiedades debe seguir el formato estándar:
+ * jugadorN.contrasena=valor
+ * jugadorN.nombreUsuario=valor
+ * 
+ * donde N es el número del jugador (1-6).
  *
- * @author carlosmamut1
- * @author FELIPE
+ * @author carlosmamut
+ * @author batapop
  * @author AlexM
+ * @version 1.0
+ * @since 2024
  */
 public class ConexionPropiedades {
 
+    /**
+     * Objeto Properties para almacenar y gestionar las propiedades cargadas
+     * desde el archivo de configuración.
+     */
     private Properties props;
 
+    /**
+     * Obtiene el objeto Properties actual.
+     * 
+     * @return El objeto Properties con las propiedades cargadas
+     */
     public Properties getProps() {
         return props;
     }
 
+    /**
+     * Establece el objeto Properties.
+     * 
+     * @param props El objeto Properties a asignar
+     */
     public void setProps(Properties props) {
         this.props = props;
     }
 
     /**
-     * Constructor que inicializa el objeto {@code Properties}.
+     * Constructor que inicializa el objeto Properties.
+     * Crea una nueva instancia de Properties lista para cargar datos.
      */
     public ConexionPropiedades() {
         props = new Properties();
@@ -43,31 +61,35 @@ public class ConexionPropiedades {
 
     /**
      * Carga un archivo de propiedades desde la ruta especificada
-     * y extrae los datos necesarios en un arreglo.
+     * y extrae los datos de jugadores en un arreglo.
+     * 
+     * Este método abre el archivo, carga las propiedades, extrae los datos
+     * necesarios y cierra el archivo automáticamente.
      *
-     * @param url ruta del archivo .properties
-     * @return arreglo con los valores de propiedades requeridas
-     * @throws IOException si ocurre un error al leer el archivo
+     * @param url Ruta del archivo .properties a cargar
+     * @return Arreglo con los valores de propiedades de los jugadores
+     * @throws IOException Si ocurre un error al leer el archivo
      */
-   
-
-
     public String[] cargarFile(String url) throws IOException {
-        
-       FileInputStream archivo = new FileInputStream(url);
+        FileInputStream archivo = new FileInputStream(url);
         props.load(archivo);
         String datosQueNecesito[] = loaderDatosQueNecesito();
         archivo.close();
         return datosQueNecesito;
-
     } 
 
-    
-
     /**
-     * Carga los valores de propiedades específicas asociadas a varios objetos gato.
+     * Extrae los valores de propiedades específicas asociadas a los jugadores
+     * del sistema de juego de memoria.
+     * 
+     * Carga las credenciales (contraseña y nombre de usuario) de hasta 6 jugadores
+     * organizándolos en un arreglo secuencial donde cada par de elementos
+     * corresponde a la contraseña y nombre de usuario de un jugador.
+     * 
+     * Estructura del arreglo retornado:
+     * [contraseña1, usuario1, contraseña2, usuario2, ..., contraseña6, usuario6]
      *
-     * @return arreglo con los valores de las propiedades cargadas
+     * @return Arreglo con los valores de las propiedades de jugadores cargadas
      */
     public String[] loaderDatosQueNecesito() {
         String[] atributos = {
@@ -85,7 +107,5 @@ public class ConexionPropiedades {
             props.getProperty("jugador6.nombreUsuario"),
         };
         return atributos;
-
     }
-
 }

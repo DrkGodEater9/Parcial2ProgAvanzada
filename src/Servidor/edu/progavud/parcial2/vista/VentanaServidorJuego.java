@@ -6,19 +6,63 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 /**
- *
- * @author a
+ * Ventana principal del juego de memoria multijugador para el servidor.
+ * 
+ * Esta clase implementa la interfaz gráfica del juego de memoria que se ejecuta
+ * en el servidor, proporcionando un tablero interactivo de 40 cartas organizadas
+ * en una cuadrícula de 8x5. Permite la visualización y control del juego desde
+ * el lado del servidor, incluyendo el manejo de turnos entre jugadores conectados.
+ * 
+ * Componentes principales:
+ * - Tablero de 40 botones interactivos representando cartas
+ * - 40 etiquetas superpuestas para mostrar imágenes de las cartas
+ * - Panel de control con botón de inicio de juego
+ * - Indicador visual del turno actual del jugador
+ * 
+ * El juego consiste en encontrar parejas de cartas idénticas, donde los jugadores
+ * se turnan para seleccionar dos cartas por jugada. Las cartas se revelan
+ * temporalmente y permanecen visibles si forman una pareja, o se ocultan
+ * nuevamente si no coinciden.
+ * 
+ * Arquitectura:
+ * Forma parte del patrón MVC como componente Vista, manteniendo separación
+ * entre la presentación gráfica y la lógica de negocio del juego. Se comunica
+ * con el controlador FachadaServidor para procesar las acciones del usuario
+ * y actualizar el estado del juego.
+ * 
+ * @author carlosmamut
+ * @author batapop
+ * @author AlexM
+ * @version 2.1
+ * @since 2024
  */
 public class VentanaServidorJuego extends javax.swing.JFrame {
-
+    
     /**
-     * Creates new form VentanaServidorJuego
+     * Referencia al controlador principal.
      */
     private FachadaServidor fachadaS;
+    
+    /**
+     * Array de botones del tablero de juego.
+     */
+    private JButton[] botones;
+    
+    /**
+     * Array de etiquetas para mostrar las imágenes.
+     */
+    private JLabel[] labels;
 
+    /**
+     * Constructor de la ventana del juego.
+     * 
+     * @param fachadaS Referencia al controlador FachadaServidor
+     */
     public VentanaServidorJuego(FachadaServidor fachadaS) {
         this.fachadaS = fachadaS;
         initComponents();
+        
+        // Inicialización del array de botones
         this.botones = new JButton[]{
             vServJuegoBtn1, vServJuegoBtn2, vServJuegoBtn3, vServJuegoBtn4, vServJuegoBtn5,
             vServJuegoBtn6, vServJuegoBtn7, vServJuegoBtn8, vServJuegoBtn9, vServJuegoBtn10,
@@ -30,6 +74,7 @@ public class VentanaServidorJuego extends javax.swing.JFrame {
             vServJuegoBtn36, vServJuegoBtn37, vServJuegoBtn38, vServJuegoBtn39, vServJuegoBtn40
         };
 
+        // Inicialización del array de etiquetas
         this.labels = new JLabel[]{
             vServJuegoLbl1, vServJuegoLbl2, vServJuegoLbl3, vServJuegoLbl4, vServJuegoLbl5,
             vServJuegoLbl6, vServJuegoLbl7, vServJuegoLbl8, vServJuegoLbl9, vServJuegoLbl10,
@@ -42,33 +87,68 @@ public class VentanaServidorJuego extends javax.swing.JFrame {
         };
     }
 
+    /**
+     * Obtiene el array de botones del tablero.
+     * 
+     * @return Array de botones
+     */
     public JButton[] getBotones() {
         return botones;
     }
 
+    /**
+     * Establece el array de botones del tablero.
+     * 
+     * @param botones Array de botones
+     */
     public void setBotones(JButton[] botones) {
         this.botones = botones;
     }
 
+    /**
+     * Obtiene el array de etiquetas del tablero.
+     * 
+     * @return Array de etiquetas
+     */
     public JLabel[] getLabels() {
         return labels;
     }
 
+    /**
+     * Establece el array de etiquetas del tablero.
+     * 
+     * @param labels Array de etiquetas
+     */
     public void setLabels(JLabel[] labels) {
         this.labels = labels;
     }
 
+    /**
+     * Asigna una imagen a una posición específica del tablero.
+     * 
+     * @param numero Índice de la imagen a cargar
+     * @param otroNumero Posición en el tablero donde colocar la imagen
+     */
     public void agregarFoto(int numero, int otroNumero) {
-        // 3) Cargamos la imagen desde la ruta proporcionada
         ImageIcon icono = new ImageIcon("src/Servidor/edu/progavud/parcial2/img/" + (numero + 1) + ".jpg");
         this.labels[otroNumero].setIcon(icono);
     }
 
+    /**
+     * Actualiza el label que muestra el turno actual.
+     * 
+     * @param nombre Nombre del jugador que tiene el turno
+     */
     public void actualizarTurno(String nombre) {
         this.vServJuegoLblTurno.setText("Turno De: " + nombre);
     }
 
     @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    /**
+     * Inicializa los componentes gráficos de la ventana.
+     * Método generado automáticamente por NetBeans.
+     */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -574,8 +654,6 @@ public class VentanaServidorJuego extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private JButton[] botones;
-    private JLabel[] labels;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
